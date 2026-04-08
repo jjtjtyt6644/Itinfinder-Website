@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ItinFinder · AI Travel Planner</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+          },
+          colors: {
+            primary: '#6366f1',
+            secondary: '#ec4899',
+            accent: '#06b6d4',
+            dark: '#0f172a',
+            glass: 'rgba(255, 255, 255, 0.05)',
+            glassBorder: 'rgba(255, 255, 255, 0.1)',
+          },
+          animation: {
+            'gradient-x': 'gradient-x 15s ease infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'slide-in-left': 'slideInLeft 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
+            'slide-in-right': 'slideInRight 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
+            'fade-up': 'fadeUp 0.8s ease-out forwards',
+            'scale-in': 'scaleIn 0.5s ease-out forwards',
+          },
+          keyframes: {
+            'gradient-x': {
+              '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+              '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
+            },
+            'float': {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-20px)' },
+            },
+            slideInLeft: {
+              '0%': { opacity: '0', transform: 'translateX(-50px)' },
+              '100%': { opacity: '1', transform: 'translateX(0)' },
+            },
+            slideInRight: {
+              '0%': { opacity: '0', transform: 'translateX(50px)' },
+              '100%': { opacity: '1', transform: 'translateX(0)' },
+            },
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(30px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            scaleIn: {
+              '0%': { opacity: '0', transform: 'scale(0.9)' },
+              '100%': { opacity: '1', transform: 'scale(1)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .glass-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .text-gradient-alt {
+      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .feature-icon {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .mode-badge {
+      background: linear-gradient(90deg, rgba(6, 182, 212, 0.2), rgba(59, 130, 246, 0.2));
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    /* Animation base states */
+    .animate-on-scroll {
+      opacity: 0;
+    }
+
+    .slide-left {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .slide-right {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+    }
+
+    .scale-in {
+      opacity: 0;
+      transform: scale(0.9);
+      transition: all 0.5s ease-out;
+    }
+
+    .animated {
+      opacity: 1 !important;
+      transform: translateX(0) translateY(0) scale(1) !important;
+    }
+
+    .navbar-blur {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+  </style>
+</head>
+
+<body class="antialiased font-sans">
+
+  <!-- Fixed Navigation Bar -->
+  <nav class="fixed top-0 left-0 w-full z-50 navbar-blur py-4 px-6 md:px-12 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-2 group">
+      <span class="font-display text-2xl font-bold text-white">Itin<span class="text-gradient">Finder</span></span>
+      <span
+        class="text-xs bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full border border-cyan-500/30">v1.0.0</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+      <a href="#home" class="text-slate-300 hover:text-white transition">Home</a>
+      <a href="#modes" class="text-slate-300 hover:text-white transition">Features</a>
+      <a href="#ecosystem" class="text-slate-300 hover:text-white transition">Ecosystem</a>
+      <a href="#tech" class="text-slate-300 hover:text-white transition">Tech</a>
+      <a href="#testimonials" class="text-slate-300 hover:text-white transition">Testimonials</a>
+      <a href="#faq" class="text-slate-300 hover:text-white transition">FAQ</a>
+      <a href="privacy.html" class="text-slate-300 hover:text-white transition">Privacy</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="downloads.html"
+        class="hidden sm:inline-block px-5 py-2 rounded-full glass-panel text-sm font-medium text-white hover:bg-white/10 transition">Download
+        APK</a>
+      <a href="downloads.html" class="sm:hidden px-4 py-2 rounded-full bg-indigo-600 text-white text-sm font-medium">Get
+        App</a>
+    </div>
+  </nav>
+
+  <!-- Background ambient effects -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="glow top-0 -left-20 animate-pulse-slow"></div>
+    <div class="glow bottom-0 -right-20 animate-pulse-slow" style="animation-delay: 2s;"></div>
+    <div class="absolute top-1/3 left-1/4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl animate-float"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-float"
+      style="animation-delay: 1.5s;"></div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="relative z-10">
+
+    <!-- HERO SECTION -->
+    <section id="home" class="min-h-screen flex items-center justify-center pt-24 pb-16 px-6 relative">
+      <div class="container mx-auto text-center max-w-5xl">
+        <div
+          class="inline-block mb-6 px-4 py-2 rounded-full glass-panel text-sm font-medium text-cyan-400 tracking-wider uppercase fade-up animated">
+          AI-Powered Travel Planning
+        </div>
+        <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight fade-up">
+          <span class="text-white">Itin</span><span class="text-gradient">Finder</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto mb-10 font-light leading-relaxed fade-up"
+          style="transition-delay: 0.1s">
+          Transform your travel desires into vivid, highly detailed day-by-day itineraries using advanced AI and
+          real-time live data.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center fade-up" style="transition-delay: 0.2s">
+          <a href="downloads.html"
+            class="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full font-semibold text-white hover:shadow-2xl hover:shadow-indigo-500/30 transition-all transform hover:scale-105">
+            Download Latest APK
+          </a>
+          <a href="#modes"
+            class="px-8 py-4 glass-panel rounded-full font-semibold text-white hover:bg-white/10 transition-all">
+            Discover Features
+          </a>
+        </div>
+        <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div class="glass-card p-6 rounded-2xl text-center fade-up" style="transition-delay: 0.3s">
+            <div class="text-3xl font-bold text-cyan-400 mb-1">~10s</div>
+            <div class="text-slate-400 text-sm">Simple Mode Generation</div>
+          </div>
+          <div class="glass-card p-6 rounded-2xl text-center fade-up" style="transition-delay: 0.4s">
+            <div class="text-3xl font-bold text-purple-400 mb-1">Live</div>
+            <div class="text-slate-400 text-sm">Real-time Data Scraping</div>
+          </div>
+          <div class="glass-card p-6 rounded-2xl text-center fade-up" style="transition-delay: 0.5s">
+            <div class="text-3xl font-bold text-pink-400 mb-1">Global</div>
+            <div class="text-slate-400 text-sm">Multi-language Support</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DUAL MODES SECTION -->
+    <section id="modes" class="py-24 px-6 relative bg-slate-900/80">
+      <div class="container mx-auto max-w-6xl">
+        <div class="text-center mb-16">
+          <h2 class="font-display text-5xl md:text-6xl font-bold mb-4 slide-left">
+            Dual <span class="text-gradient">Generation</span> Modes
+          </h2>
+          <p class="text-slate-400 text-lg slide-right">Choose your depth — from quick inspiration to live‑verified
+            plans</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="glass-card rounded-3xl p-8 relative overflow-hidden group slide-left">
+            <div
+              class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl group-hover:bg-indigo-500/30 transition-all">
+            </div>
+            <div class="feature-icon w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold mb-3 font-display">Simple Mode · ~10s</h3>
+            <p class="text-slate-400 mb-6 leading-relaxed">
+              Lightning‑fast itineraries built on Groq LLaMA 3.3 70B knowledge. Perfect for brainstorming, last‑minute
+              getaways, or building a foundation.
+            </p>
+            <div class="flex items-center gap-2 text-indigo-400 font-medium">
+              <span class="text-sm">Instant results</span>
+            </div>
+          </div>
+          <div class="glass-card rounded-3xl p-8 relative overflow-hidden group border-cyan-500/30 slide-right">
+            <div
+              class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/20 rounded-full blur-3xl group-hover:bg-cyan-500/30 transition-all">
+            </div>
+            <div
+              class="absolute top-4 right-4 mode-badge px-3 py-1 rounded-full text-xs font-bold text-cyan-300 uppercase tracking-wider">
+              Pro</div>
+            <div class="feature-icon w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-cyan-500/20">
+              <svg class="w-8 h-8 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold mb-3 font-display">Deep Mode · ~30s</h3>
+            <p class="text-slate-400 mb-6 leading-relaxed">
+              TinyFish AI agents scrape live attraction hours, restaurant availability, and local events. Get
+              hyper‑accurate, real‑time itineraries.
+            </p>
+            <div class="flex items-center gap-2 text-cyan-400 font-medium">
+              <span class="text-sm">Live web scraping</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-12 glass-panel rounded-2xl p-6 max-w-4xl mx-auto fade-up">
+          <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-4">
+              <div
+                class="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 to-orange-400 flex items-center justify-center font-bold text-white text-xl">
+                AI</div>
+              <div>
+                <h4 class="font-bold text-lg">Budget Finder Assistant</h4>
+                <p class="text-slate-400 text-sm">Input budget and timeframe for three realistic destination
+                  recommendations</p>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <span class="px-3 py-1 rounded-full bg-white/5 text-xs text-slate-300 border border-white/10">Smart
+                Matching</span>
+              <span class="px-3 py-1 rounded-full bg-white/5 text-xs text-slate-300 border border-white/10">Cost
+                Analysis</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ECOSYSTEM / BEYOND GENERATION -->
+    <section id="ecosystem" class="py-24 px-6 relative bg-gradient-to-b from-slate-900 to-slate-800">
+      <div class="container mx-auto max-w-7xl">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 class="font-display text-5xl font-bold mb-6 leading-tight slide-left">
+              Beyond <span class="text-gradient-alt">Generation</span><br>
+              Your Travel Companion
+            </h2>
+            <p class="text-slate-400 text-lg mb-8 leading-relaxed slide-left" style="transition-delay: 0.1s">
+              ItinFinder supports your whole journey — from planning alternatives to journaling memories.
+            </p>
+            <div class="space-y-4">
+              <div class="glass-card p-4 rounded-xl flex items-center gap-4 slide-left" style="transition-delay: 0.15s">
+                <div
+                  class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-300 text-xl font-bold">
+                  ⇄</div>
+                <div>
+                  <h4 class="font-bold">Alternative Suggestions</h4>
+                  <p class="text-sm text-slate-400">Swap any activity with AI-generated alternatives tailored to your
+                    preferences</p>
+                </div>
+              </div>
+              <div class="glass-card p-4 rounded-xl flex items-center gap-4 slide-left" style="transition-delay: 0.2s">
+                <div
+                  class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-300 text-xl font-bold">
+                  🌐</div>
+                <div>
+                  <h4 class="font-bold">Community Explore</h4>
+                  <p class="text-sm text-slate-400">Share trips and browse trending itineraries from global travelers
+                  </p>
+                </div>
+              </div>
+              <div class="glass-card p-4 rounded-xl flex items-center gap-4 slide-left" style="transition-delay: 0.25s">
+                <div
+                  class="w-12 h-12 rounded-lg bg-orange-500/20 flex items-center justify-center text-orange-300 text-xl font-bold">
+                  📓</div>
+                <div>
+                  <h4 class="font-bold">Travel Journaling</h4>
+                  <p class="text-sm text-slate-400">Log daily notes and memories directly within your active trip</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="relative slide-right">
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-3xl blur-3xl opacity-20 animate-pulse-slow">
+            </div>
+            <div class="glass-panel rounded-3xl p-8 relative">
+              <div class="space-y-6">
+                <div class="flex items-center justify-between pb-6 border-b border-white/10">
+                  <div>
+                    <h3 class="font-display text-2xl font-bold">Trip to Kyoto</h3>
+                    <p class="text-slate-400 text-sm">7 days · Cultural & Culinary</p>
+                  </div>
+                  <div class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-bold">Active</div>
+                </div>
+                <div class="space-y-4">
+                  <div class="flex gap-4">
+                    <div class="w-16 text-right text-sm text-slate-500">09:00</div>
+                    <div class="flex-1 glass-card p-3 rounded-lg border-l-4 border-indigo-500">
+                      <h5 class="font-semibold text-sm">Fushimi Inari Shrine</h5>
+                      <p class="text-xs text-slate-400">Hike through thousands of vermilion torii gates</p>
+                    </div>
+                  </div>
+                  <div class="flex gap-4">
+                    <div class="w-16 text-right text-sm text-slate-500">13:00</div>
+                    <div class="flex-1 glass-card p-3 rounded-lg border-l-4 border-orange-500">
+                      <h5 class="font-semibold text-sm">Traditional Kaiseki Lunch</h5>
+                      <p class="text-xs text-slate-400">Multi-course seasonal dining</p><button
+                        class="mt-2 text-xs px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-cyan-400 transition">Alternative</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="pt-4 flex gap-3">
+                  <button
+                    class="flex-1 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm font-medium transition">Export
+                    PDF</button>
+                  <button
+                    class="flex-1 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm font-medium transition">Share
+                    Trip</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADVANCED INTELLIGENCE + TECH STACK -->
+    <section id="tech" class="py-24 px-6 relative bg-slate-900">
+      <div class="container mx-auto max-w-6xl">
+        <div class="text-center mb-12">
+          <h2 class="font-display text-5xl font-bold mb-4 fade-up">Advanced <span
+              class="text-gradient">Intelligence</span></h2>
+          <p class="text-slate-400 text-lg fade-up" style="transition-delay: 0.1s">Cutting‑edge AI and real‑time data
+            sources</p>
+        </div>
+        <div class="glass-panel rounded-3xl p-8 md:p-12 scale-in">
+          <div class="grid md:grid-cols-3 gap-8 mb-12">
+            <div class="text-center">
+              <div
+                class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center shadow-lg text-white text-2xl font-bold">
+                G</div>
+              <h3 class="font-bold text-lg">Groq LLaMA 3.3 70B</h3>
+              <p class="text-sm text-slate-400">High-speed inference for instant itinerary generation</p>
+            </div>
+            <div class="text-center">
+              <div
+                class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg text-white text-2xl font-bold">
+                TF</div>
+              <h3 class="font-bold text-lg">TinyFish Agents</h3>
+              <p class="text-sm text-slate-400">Autonomous web browsing agents that scrape live attraction data</p>
+            </div>
+            <div class="text-center">
+              <div
+                class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg text-white text-2xl font-bold">
+                OM</div>
+              <h3 class="font-bold text-lg">Open-Meteo</h3>
+              <p class="text-sm text-slate-400">7-day weather forecasting integrated into planning</p>
+            </div>
+          </div>
+          <div class="border-t border-white/10 pt-8 flex flex-wrap justify-center gap-4">
+            <span class="px-4 py-2 rounded-lg bg-white/5 text-sm text-slate-300 border border-white/10">React
+              Native</span>
+            <span class="px-4 py-2 rounded-lg bg-white/5 text-sm text-slate-300 border border-white/10">Expo</span>
+            <span class="px-4 py-2 rounded-lg bg-white/5 text-sm text-slate-300 border border-white/10">Firebase</span>
+            <span class="px-4 py-2 rounded-lg bg-white/5 text-sm text-slate-300 border border-white/10">Stripe</span>
+            <span class="px-4 py-2 rounded-lg bg-white/5 text-sm text-slate-300 border border-white/10">i18next</span>
+            <span class="px-4 py-2 rounded-lg bg-white/5 text-sm text-slate-300 border border-white/10">Cloud
+              Sync</span>
+          </div>
+        </div>
+        <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="glass-card p-4 rounded-xl text-center fade-up">
+            <div class="text-2xl font-bold">5</div>
+            <div class="text-xs text-slate-400">Free Daily Requests</div>
+          </div>
+          <div class="glass-card p-4 rounded-xl text-center fade-up" style="transition-delay: 0.1s">
+            <div class="text-2xl font-bold">5</div>
+            <div class="text-xs text-slate-400">Languages Supported</div>
+          </div>
+          <div class="glass-card p-4 rounded-xl text-center fade-up" style="transition-delay: 0.2s">
+            <div class="text-2xl font-bold">PDF</div>
+            <div class="text-xs text-slate-400">Export Format</div>
+          </div>
+          <div class="glass-card p-4 rounded-xl text-center fade-up" style="transition-delay: 0.3s">
+            <div class="text-2xl font-bold">Ghost</div>
+            <div class="text-xs text-slate-400">Mode Available</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECURITY & RATE LIMITING -->
+    <section id="security" class="py-24 px-6 relative bg-gradient-to-br from-slate-800 to-slate-900">
+      <div class="container mx-auto max-w-6xl">
+        <div class="max-w-4xl mx-auto text-center mb-16">
+          <h2 class="font-display text-5xl font-bold mb-6 slide-left">Security & <span class="text-gradient">Rate
+              Limiting</span></h2>
+          <p class="text-slate-400 text-lg slide-right">Enterprise-grade protection with user-friendly boundaries</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="glass-card rounded-2xl p-8 slide-left">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center text-red-300 text-xl">🔒
+              </div>
+              <h3 class="text-xl font-bold">Usage Controls</h3>
+            </div>
+            <ul class="space-y-4 text-slate-300 text-sm">
+              <li class="flex items-start gap-3"><span class="w-1.5 h-1.5 rounded-full bg-red-400 mt-2"></span>Daily
+                request limits enforced via Firebase or AsyncStorage in ghost mode</li>
+              <li class="flex items-start gap-3"><span class="w-1.5 h-1.5 rounded-full bg-red-400 mt-2"></span>Rewarded
+                advertisements available for additional credit generation</li>
+              <li class="flex items-start gap-3"><span class="w-1.5 h-1.5 rounded-full bg-red-400 mt-2"></span>Secure
+                cloud synchronization across all user devices</li>
+            </ul>
+          </div>
+          <div class="glass-card rounded-2xl p-8 slide-right">
+            <div class="flex items-center gap-4 mb-6">
+              <div
+                class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center text-green-300 text-xl">
+                🛡️</div>
+              <h3 class="text-xl font-bold">Authentication Protection</h3>
+            </div>
+            <ul class="space-y-4 text-slate-300 text-sm">
+              <li class="flex items-start gap-3"><span
+                  class="w-1.5 h-1.5 rounded-full bg-green-400 mt-2"></span>Brute-force protection on login and password
+                reset routes</li>
+              <li class="flex items-start gap-3"><span
+                  class="w-1.5 h-1.5 rounded-full bg-green-400 mt-2"></span>AI-powered profanity filtering for username
+                moderation</li>
+              <li class="flex items-start gap-3"><span
+                  class="w-1.5 h-1.5 rounded-full bg-green-400 mt-2"></span>Firebase Authentication with secure token
+                management</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-12 flex justify-center gap-8 fade-up">
+          <div class="text-center">
+            <div class="text-3xl font-display font-bold text-white">Guest Explorer</div>
+            <div class="text-sm text-slate-500">Entry Badge</div>
+          </div>
+          <div class="w-px bg-white/10"></div>
+          <div class="text-center">
+            <div class="text-3xl font-display font-bold text-gradient">Universe Traveler</div>
+            <div class="text-sm text-slate-500">Elite Badge</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS / SOCIAL PROOF -->
+    <section id="testimonials" class="py-24 px-6 relative bg-slate-900">
+      <div class="container mx-auto max-w-6xl">
+        <div class="text-center mb-16">
+          <h2 class="font-display text-5xl font-bold mb-4 fade-up">Trusted by <span
+              class="text-gradient-alt">Travelers</span></h2>
+          <p class="text-slate-400 text-lg fade-up" style="transition-delay: 0.1s">Join users who plan their trips
+            smarter with ItinFinder</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="glass-card rounded-2xl p-8 slide-left">
+            <div class="text-4xl text-cyan-400 mb-4">“</div>
+            <p class="text-slate-300 mb-6">Deep Mode saved my trip to Tokyo. It found a hidden ramen spot that wasn't on
+              any guide — and even checked if it was open!</p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-indigo-500/30 flex items-center justify-center font-bold">M</div>
+              <div>
+                <div class="font-semibold">Michael R.</div>
+                <div class="text-xs text-slate-500">Tokyo, 2025</div>
+              </div>
+            </div>
+          </div>
+          <div class="glass-card rounded-2xl p-8 fade-up" style="transition-delay: 0.2s">
+            <div class="text-4xl text-cyan-400 mb-4">“</div>
+            <p class="text-slate-300 mb-6">The Budget Finder suggested Porto instead of Lisbon — it was perfect. I
+              stayed under budget and had an incredible time.</p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center font-bold">S</div>
+              <div>
+                <div class="font-semibold">Sophia L.</div>
+                <div class="text-xs text-slate-500">Portugal, 2026</div>
+              </div>
+            </div>
+          </div>
+          <div class="glass-card rounded-2xl p-8 slide-right">
+            <div class="text-4xl text-cyan-400 mb-4">“</div>
+            <p class="text-slate-300 mb-6">Ghost mode is a game changer. I planned my entire trip offline and synced
+              when I got wifi. Seamless.</p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-pink-500/30 flex items-center justify-center font-bold">D</div>
+              <div>
+                <div class="font-semibold">David K.</div>
+                <div class="text-xs text-slate-500">Thailand, 2025</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP / FUTURE (extra content) -->
+    <section class="py-20 px-6 relative bg-gradient-to-t from-slate-900 to-slate-800">
+      <div class="container mx-auto max-w-5xl text-center">
+        <h2 class="font-display text-4xl md:text-5xl font-bold mb-12 slide-left">Coming <span
+            class="text-gradient">Soon</span></h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="glass-panel rounded-2xl p-6 fade-up">
+            <div class="text-cyan-400 text-lg mb-2">Q3 2026</div>
+            <h4 class="font-bold text-lg">Flight Price Alerts</h4>
+            <p class="text-sm text-slate-400">Integrated airfare tracking within your itinerary</p>
+          </div>
+          <div class="glass-panel rounded-2xl p-6 fade-up" style="transition-delay: 0.1s">
+            <div class="text-cyan-400 text-lg mb-2">Q4 2026</div>
+            <h4 class="font-bold text-lg">AR Navigation</h4>
+            <p class="text-sm text-slate-400">Point your camera to see attraction info overlaid</p>
+          </div>
+          <div class="glass-panel rounded-2xl p-6 fade-up" style="transition-delay: 0.2s">
+            <div class="text-cyan-400 text-lg mb-2">Q1 2027</div>
+            <h4 class="font-bold text-lg">Group Planning</h4>
+            <p class="text-sm text-slate-400">Collaborative itineraries with voting</p>
+          </div>
+          <div class="glass-panel rounded-2xl p-6 fade-up" style="transition-delay: 0.3s">
+            <div class="text-cyan-400 text-lg mb-2">Q2 2027</div>
+            <h4 class="font-bold text-lg">Carbon Footprint</h4>
+            <p class="text-sm text-slate-400">Track and offset your travel emissions</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section id="faq" class="py-24 px-6 relative bg-slate-900">
+      <div class="container mx-auto max-w-4xl">
+        <h2 class="font-display text-4xl md:text-5xl font-bold text-center mb-16 fade-up">Frequently Asked <span
+            class="text-gradient-alt">Questions</span></h2>
+        <div class="space-y-4">
+          <div class="glass-card rounded-2xl p-6 slide-left">
+            <h3 class="font-bold text-lg mb-2">Is ItinFinder free?</h3>
+            <p class="text-slate-400">Yes, every user gets 5 free AI Itinery generation requests per day. You can watch
+              rewarded ads for extra credits or upgrade to a Pro plan for unlimited AI generations and you unlock deep
+              mode.</p>
+          </div>
+          <div class="glass-card rounded-2xl p-6 slide-right">
+            <h3 class="font-bold text-lg mb-2">How accurate is Deep Mode?</h3>
+            <p class="text-slate-400">Deep Mode uses TinyFish agents to verify live data (opening hours, availability)
+              with over 97% accuracy. Results may vary during network issues.</p>
+          </div>
+          <div class="glass-card rounded-2xl p-6 slide-left">
+            <h3 class="font-bold text-lg mb-2">Can I use ItinFinder offline?</h3>
+            <p class="text-slate-400">Absolutely. ItinFinder supports offline mode to store requests locally. It will
+              autosync with database when you're back online.</p>
+          </div>
+          <div class="glass-card rounded-2xl p-6 slide-right">
+            <h3 class="font-bold text-lg mb-2">What languages are supported?</h3>
+            <p class="text-slate-400">English, Spanish, French, German, and Japanese. More coming soon.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="py-28 px-6 relative bg-slate-900">
+      <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/20 to-transparent"></div>
+      <div class="container mx-auto text-center max-w-4xl relative z-10">
+        <h2 class="font-display text-5xl md:text-7xl font-bold mb-6 scale-in">Ready to <span
+            class="text-gradient">Explore</span>?</h2>
+        <p class="text-xl text-slate-400 mb-10 fade-up">Download the latest APK and start your intelligent journey
+          today.</p>
+        <div class="flex flex-col sm:flex-row gap-5 justify-center fade-up" style="transition-delay: 0.2s">
+          <a href="downloads.html"
+            class="px-10 py-5 bg-white text-slate-900 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all inline-flex items-center gap-2 justify-center">
+            Download APK v1.0.0
+          </a>
+          <a href="#modes"
+            class="px-10 py-5 glass-panel rounded-full font-bold text-lg hover:bg-white/10 transition-all">Learn
+            more</a>
+        </div>
+        <div class="mt-14 glass-panel inline-flex flex-wrap items-center justify-center gap-6 px-8 py-4 rounded-2xl">
+          <div><span class="text-xs text-slate-400 uppercase tracking-wider">Built With</span>
+            <div class="font-semibold">React Native & Expo</div>
+          </div>
+          <div class="w-px h-8 bg-white/10 hidden sm:block"></div>
+          <div><span class="text-xs text-slate-400 uppercase tracking-wider">Powered By</span>
+            <div class="font-semibold">Groq & TinyFish</div>
+          </div>
+          <div class="w-px h-8 bg-white/10 hidden sm:block"></div>
+          <div><span class="text-xs text-slate-400 uppercase tracking-wider">Hosted On</span>
+            <div class="font-semibold">Firebase</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-8 text-center text-slate-500 text-sm">
+      <div class="container mx-auto px-6">
+        <p>ItinFinder · Intelligent Travel Planning · © 2026</p>
+        <p class="mt-2 text-xs">APK available on the download page. Enable "unknown sources" to install.</p>
+        <div class="mt-4 flex justify-center gap-6">
+          <a href="downloads.html" class="hover:text-cyan-400 transition">Download</a>
+          <a href="privacy.html" class="hover:text-cyan-400 transition">Privacy</a>
+          <a href="#" class="hover:text-cyan-400 transition">GitHub</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Scroll Animation Observer -->
+  <script>
+      (function () {
+        const animatedElements = document.querySelectorAll('.slide-left, .slide-right, .fade-up, .scale-in');
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('animated');
+              // Optional: unobserve after animation to reduce overhead
+              // observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -30px 0px' });
+
+        animatedElements.forEach(el => observer.observe(el));
+
+        // Trigger for elements already in view on load
+        setTimeout(() => {
+          animatedElements.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.8) {
+              el.classList.add('animated');
+            }
+          });
+        }, 100);
+      })();
+  </script>
+
+  <!-- Smooth scroll for same-page anchor links (preserve default behavior) -->
+</body>
+
+</html>

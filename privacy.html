@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ItinFinder · Privacy & Terms</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#ec4899',
+                        accent: '#06b6d4',
+                        dark: '#0f172a',
+                        glass: 'rgba(255, 255, 255, 0.05)',
+                        glassBorder: 'rgba(255, 255, 255, 0.1)',
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+                            '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .text-gradient-alt {
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .navbar-blur {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .policy-section h3 {
+            color: #e2e8f0;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .policy-section p {
+            color: #cbd5e1;
+        }
+
+        .badge {
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 40px;
+        }
+    </style>
+</head>
+
+<body class="antialiased font-sans">
+
+    <!-- Fixed Navigation Bar (consistent with index) -->
+    <nav class="fixed top-0 left-0 w-full z-50 navbar-blur py-4 px-6 md:px-12 flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-2 group">
+            <span class="font-display text-2xl font-bold text-white">Itin<span
+                    class="text-gradient">Finder</span></span>
+            <span
+                class="text-xs bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full border border-cyan-500/30">v2.1</span>
+        </a>
+        <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+            <a href="index.html#home" class="text-slate-300 hover:text-white transition">Home</a>
+            <a href="index.html#modes" class="text-slate-300 hover:text-white transition">Features</a>
+            <a href="index.html#ecosystem" class="text-slate-300 hover:text-white transition">Ecosystem</a>
+            <a href="index.html#faq" class="text-slate-300 hover:text-white transition">FAQ</a>
+            <a href="privacy.html" class="text-cyan-400 font-semibold">Privacy</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="downloads.html"
+                class="hidden sm:inline-block px-5 py-2 rounded-full glass-panel text-sm font-medium text-white hover:bg-white/10 transition">Download
+                APK</a>
+            <a href="downloads.html"
+                class="sm:hidden px-4 py-2 rounded-full bg-indigo-600 text-white text-sm font-medium">Get App</a>
+        </div>
+    </nav>
+
+    <!-- Background ambient effects -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="glow top-0 -left-20 animate-pulse-slow"></div>
+        <div class="glow bottom-0 -right-20 animate-pulse-slow" style="animation-delay: 2s;"></div>
+        <div class="absolute top-1/3 left-1/4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-float"
+            style="animation-delay: 1.5s;"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 pt-28 pb-20 px-6">
+        <div class="container mx-auto max-w-4xl">
+
+            <!-- Page Header -->
+            <div class="text-center mb-16">
+                <div
+                    class="inline-block mb-4 px-4 py-1.5 rounded-full glass-panel text-sm font-medium text-cyan-400 tracking-wider uppercase">
+                    Legal & Transparency
+                </div>
+                <h1 class="font-display text-4xl md:text-6xl font-bold mb-4">
+                    Privacy & <span class="text-gradient-alt">Terms</span>
+                </h1>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                    Clear, concise, and written for humans. Last updated April 2026.
+                </p>
+            </div>
+
+            <!-- PRIVACY POLICY CARD -->
+            <div class="glass-card rounded-3xl p-8 md:p-12 mb-12 border border-white/10">
+                <div class="flex items-center gap-3 mb-6">
+                    <div
+                        class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-300 text-lg font-bold">
+                        P</div>
+                    <h2 class="font-display text-3xl font-bold">Privacy Policy</h2>
+                    <span class="ml-auto text-xs text-slate-500 badge px-3 py-1">Updated April 2026</span>
+                </div>
+
+                <div class="space-y-8 text-slate-300 policy-section">
+                    <p class="text-lg font-medium text-white border-b border-white/10 pb-4">OUR COMMITMENT TO YOUR
+                        PRIVACY</p>
+                    <p class="leading-relaxed"><strong class="text-white">We strongly believe that travel should be
+                            freeing, not an opportunity to mine your data.</strong> Here is exactly how we handle your
+                        information in plain English.</p>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Minimal Data Collection</h3>
+                        <p class="leading-relaxed"><strong class="text-white">We don't track your location in the
+                                background or sell your data.</strong> If you create an account, we simply store your
+                            email securely using Google Firebase so you can log in across devices.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-2">AI Processing & Third-Parties</h3>
+                        <p class="leading-relaxed">Your itineraries are powered by <strong class="text-white">Groq and
+                                TinyFish AI Agents</strong>. The destination preferences you enter are securely sent to
+                            these engines to generate your trips. They process these requests on their high-speed
+                            servers but <strong class="text-white">do not use them to identify you personally</strong>.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Where Your Data Lives</h3>
+                        <p class="leading-relaxed">Your saved trips and profile settings live on our <strong
+                                class="text-white">secure Firebase database</strong>. If you use the app anonymously
+                            without logging in, your trips stay locally on your device.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Your Right to Be Forgotten</h3>
+                        <p class="leading-relaxed"><strong class="text-white">You have full control.</strong> At any
+                            point, you can navigate to the Profile screen and permanently delete your account, wiping
+                            all your associated trips and data from our servers instantly.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Contact Us</h3>
+                        <p class="leading-relaxed">If you have any questions or concerns regarding how your data is
+                            handled, please reach out to us at <a href="mailto:yaoprox0@gmail.com"
+                                class="text-cyan-400 hover:underline font-medium">yaoprox0@gmail.com</a>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TERMS OF SERVICE CARD -->
+            <div class="glass-card rounded-3xl p-8 md:p-12 border border-white/10">
+                <div class="flex items-center gap-3 mb-6">
+                    <div
+                        class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-300 text-lg font-bold">
+                        T</div>
+                    <h2 class="font-display text-3xl font-bold">Terms of Service</h2>
+                    <span class="ml-auto text-xs text-slate-500 badge px-3 py-1">Updated April 2026</span>
+                </div>
+
+                <div class="space-y-8 text-slate-300 policy-section">
+                    <p class="text-lg font-medium text-white border-b border-white/10 pb-4">RULES OF THE ROAD</p>
+                    <p class="leading-relaxed"><strong class="text-white">Thanks for considering ItinFinder.</strong> By
+                        using our app, you agree to these simple terms. Please read them before embarking on your
+                        journey.</p>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-2">AI is Your Co-Pilot, Not Your Guide</h3>
+                        <p class="leading-relaxed"><strong class="text-white">Our AI is incredibly powerful, but it's
+                                still artificial.</strong> Opening hours change, restaurants close, and buses run late.
+                            ItinFinder provides travel inspiration and structure, but you must independently verify
+                            critical details before travelling.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Responsible Use</h3>
+                        <p class="leading-relaxed">Our platform is designed to help people explore the world. You agree
+                            not to reverse engineer our generation pipelines, spam our AI engines, or use the app for
+                            illegal activities.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Pro Subscriptions</h3>
+                        <p class="leading-relaxed"><strong class="text-white">Pro lifetime access offers unlimited
+                                generations</strong> and access to live web-scraping agents. It is tied to your account
+                            and cannot be transferred. Abuse of our generation limits may result in account termination.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Intellectual Property</h3>
+                        <p class="leading-relaxed">The design, code, and branding of ItinFinder belong to us. <strong
+                                class="text-white">We've poured our hearts into building this</strong>, please don't
+                            copy it or redistribute it without permission.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Limitation of Liability</h3>
+                        <p class="leading-relaxed"><strong class="text-white">To the maximum extent permitted by
+                                law</strong>, ItinFinder and its creators are not responsible for ruined vacations,
+                            missed flights, or any damages occurring from using our AI recommendations. Travel safely
+                            and at your own risk.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer note -->
+            <div class="mt-12 text-center text-slate-500 text-sm">
+                <p>If you have questions about these policies, contact <a href="mailto:yaoprox0@gmail.com"
+                        class="text-cyan-400 hover:underline">yaoprox0@gmail.com</a></p>
+                <p class="mt-4">
+                    <a href="index.html" class="text-slate-400 hover:text-white transition">← Return to Home</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 border-t border-white/10 py-8 text-center text-slate-500 text-sm">
+        <div class="container mx-auto px-6">
+            <p>ItinFinder · Intelligent Travel Planning · © 2026</p>
+            <div class="mt-3 flex justify-center gap-6">
+                <a href="index.html" class="hover:text-cyan-400 transition">Home</a>
+                <a href="downloads.html" class="hover:text-cyan-400 transition">Download</a>
+                <a href="privacy.html" class="text-cyan-400 font-medium">Privacy & Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Simple reveal on scroll (optional) -->
+    <script>
+        // Subtle animation for cards as they appear
+        const cards = document.querySelectorAll('.glass-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+
+</body>
+
+</html>

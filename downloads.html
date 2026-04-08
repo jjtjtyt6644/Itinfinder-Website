@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ItinFinder · Download APK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#ec4899',
+                        accent: '#06b6d4',
+                        dark: '#0f172a',
+                        glass: 'rgba(255, 255, 255, 0.05)',
+                        glassBorder: 'rgba(255, 255, 255, 0.1)',
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'glow-pulse': 'glow-pulse 3s infinite alternate',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+                            '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'glow-pulse': {
+                            '0%': { opacity: '0.4', transform: 'scale(1)' },
+                            '100%': { opacity: '0.8', transform: 'scale(1.05)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .text-gradient-alt {
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .feature-icon {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mode-badge {
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.2), rgba(59, 130, 246, 0.2));
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-1 {
+            transition-delay: 0.1s;
+        }
+
+        .stagger-2 {
+            transition-delay: 0.2s;
+        }
+
+        .stagger-3 {
+            transition-delay: 0.3s;
+        }
+
+        .stagger-4 {
+            transition-delay: 0.4s;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .download-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 28px rgba(236, 72, 153, 0.4);
+        }
+
+        .apk-badge {
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 40px;
+        }
+    </style>
+</head>
+
+<body class="antialiased font-sans">
+
+    <!-- Animated background elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="glow top-0 -left-20 animate-pulse-slow"></div>
+        <div class="glow bottom-0 -right-20 animate-pulse-slow" style="animation-delay: 2s;"></div>
+        <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-float"
+            style="animation-delay: 1.5s;"></div>
+    </div>
+
+    <!-- Navigation hint -->
+    <div class="fixed top-6 left-6 z-50">
+        <a href="index.html"
+            class="glass-panel px-5 py-2.5 rounded-full text-sm font-medium flex items-center gap-2 hover:bg-white/10 transition-all">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Slides
+        </a>
+    </div>
+
+    <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+
+        <!-- Hero Section -->
+        <div class="text-center mb-16 md:mb-24 reveal active">
+            <div
+                class="inline-block mb-6 px-5 py-2 rounded-full glass-panel text-sm font-medium text-cyan-400 tracking-wider uppercase border border-cyan-500/20">
+                ✦ Download the latest APK ✦
+            </div>
+            <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6">
+                <span class="text-white">Itin</span><span class="text-gradient">Finder</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto font-light leading-relaxed">
+                Intelligent travel planning in your pocket.<br>Download the Android app and start exploring.
+            </p>
+
+            <!-- Version & quick stats -->
+            <div class="flex flex-wrap justify-center gap-3 mt-8 reveal stagger-1">
+                <div class="apk-badge px-5 py-2 text-sm font-medium text-cyan-300 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+                    v1.0.0 · Latest
+                </div>
+                <div class="glass-panel px-5 py-2 text-sm text-slate-300 rounded-full">
+                    Android 8.0+
+                </div>
+                <div class="glass-panel px-5 py-2 text-sm text-slate-300 rounded-full">
+                    320 MB
+                </div>
+            </div>
+        </div>
+
+        <!-- Download Card (Primary CTA) -->
+        <div class="max-w-4xl mx-auto mb-20 reveal stagger-2">
+            <div class="glass-card rounded-3xl p-8 md:p-12 relative overflow-hidden border border-white/20">
+                <div
+                    class="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-indigo-500/30 to-purple-500/30 rounded-full blur-2xl">
+                </div>
+                <div
+                    class="absolute -bottom-10 -left-10 w-40 h-40 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full blur-2xl">
+                </div>
+
+                <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+                    <div class="text-center lg:text-left">
+                        <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">Get ItinFinder APK</h2>
+                        <p class="text-slate-300 text-lg max-w-lg">
+                            Direct download · no waiting · install instantly.<br>
+                            <span class="text-sm text-slate-400 mt-2 block">Latest build: March 2026 · Deep Mode
+                                improvements</span>
+                        </p>
+                        <div class="mt-6 flex flex-wrap gap-3 justify-center lg:justify-start">
+                            <span class="px-3 py-1.5 rounded-full bg-white/5 text-xs border border-white/10">✨ AI
+                                itineraries</span>
+                            <span class="px-3 py-1.5 rounded-full bg-white/5 text-xs border border-white/10">🌍 Live
+                                data</span>
+                            <span class="px-3 py-1.5 rounded-full bg-white/5 text-xs border border-white/10">🔐
+                                Secure</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center gap-4">
+                        <a href="./apkfile/ItinFinder-latest.apk" download
+                            class="download-btn px-10 py-5 rounded-2xl text-white font-bold text-xl flex items-center gap-3 shadow-2xl hover:scale-105 transition-transform">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Download APK
+                        </a>
+                        <p class="text-xs text-slate-500 flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                            SHA256 verified · VirusTotal clean
+                        </p>
+                    </div>
+                </div>
+
+                <!-- APK details row -->
+                <div
+                    class="relative z-10 mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between text-sm">
+                    <div class="text-slate-400">
+                        <span class="font-medium text-white">ItinFinder.apk</span> · 48.2 MB
+                    </div>
+                    <div class="flex gap-4">
+                        <span class="text-slate-500">Release date: 2026-03-28</span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product detail & features grid -->
+        <div class="grid lg:grid-cols-2 gap-10 mb-20">
+            <!-- Left: Explanation -->
+            <div class="reveal stagger-1">
+                <div class="glass-panel rounded-3xl p-8 h-full">
+                    <h3 class="font-display text-3xl font-bold mb-4 flex items-center gap-3">
+                        <span class="text-gradient">Smart travel</span>
+                        <span class="text-sm font-normal bg-white/10 px-3 py-1 rounded-full">AI powered</span>
+                    </h3>
+                    <p class="text-slate-300 text-lg leading-relaxed mb-6">
+                        ItinFinder transforms your travel ideas into rich, day‑by‑day itineraries. Whether you need a
+                        quick plan or a deeply researched schedule with live availability, our dual‑mode engine
+                        delivers.
+                    </p>
+
+                    <div class="space-y-5 mt-8">
+                        <div class="flex gap-4">
+                            <div
+                                class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Simple Mode · ~10s</h4>
+                                <p class="text-slate-400">Instant suggestions using advanced LLM knowledge. Perfect for
+                                    inspiration and quick getaways.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div
+                                class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-cyan-500/20">
+                                <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Deep Mode · 30s</h4>
+                                <p class="text-slate-400">TinyFish agents scrape real‑time attraction hours, restaurant
+                                    tables, and local events. Unmatched accuracy.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div
+                                class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-purple-500/20">
+                                <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Live Weather & Forecast</h4>
+                                <p class="text-slate-400">Open‑Meteo integration gives you 7‑day outlook embedded in
+                                    each day’s plan.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Extra features / installation guide -->
+            <div class="reveal stagger-2">
+                <div class="glass-card rounded-3xl p-8 h-full border-cyan-500/20">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div
+                            class="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold">How to install</h3>
+                    </div>
+                    <ol class="space-y-4 text-slate-300 list-decimal list-inside marker:text-cyan-400">
+                        <li class="pl-2"><span class="font-medium">Download the APK</span> – tap the button above.</li>
+                        <li class="pl-2"><span class="font-medium">Allow unknown sources</span> – Settings → Security →
+                            Install unknown apps.</li>
+                        <li class="pl-2"><span class="font-medium">Open the file</span> and follow prompts.</li>
+                        <li class="pl-2"><span class="font-medium">Launch ItinFinder</span> and start planning!</li>
+                    </ol>
+
+                    <div class="mt-8 p-5 rounded-2xl bg-white/5 border border-white/10">
+                        <h4 class="font-semibold text-white mb-2 flex items-center gap-2">
+                            <span class="text-cyan-400">✦</span> What’s new in v1.0.0
+                        </h4>
+                        <ul class="text-sm text-slate-400 space-y-2">
+                            <li>• Deep Mode now 20% faster with improved scraping</li>
+                            <li>• Community explore: browse trending trips</li>
+                            <li>• Ghost mode for privacy-first usage</li>
+                            <li>• Budget Finder now supports 3 extra currencies</li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span
+                            class="px-3 py-1 text-xs rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">React
+                            Native</span>
+                        <span
+                            class="px-3 py-1 text-xs rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Expo</span>
+                        <span
+                            class="px-3 py-1 text-xs rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Groq</span>
+                        <span
+                            class="px-3 py-1 text-xs rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Firebase</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full explanation block (more detailed) -->
+        <div class="reveal stagger-3 max-w-5xl mx-auto">
+            <div class="glass-panel rounded-3xl p-8 md:p-10 border border-white/10">
+                <h3 class="font-display text-3xl font-bold mb-6 text-center md:text-left">
+                    <span class="text-gradient-alt">Everything</span> you need, explained
+                </h3>
+                <div class="grid md:grid-cols-2 gap-8 text-slate-300">
+                    <div>
+                        <h4 class="font-semibold text-white text-lg mb-3"> AI at the core</h4>
+                        <p class="leading-relaxed text-sm">ItinFinder uses Groq’s LLaMA 3.3 70B for ultra‑fast
+                            generation. In Deep Mode, TinyFish autonomous agents browse the web to verify opening hours,
+                            check real‑time availability, and even suggest alternatives if a place is booked.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-white text-lg mb-3"> Multi‑language & global</h4>
+                        <p class="leading-relaxed text-sm">The app supports English, Spanish, French, German, and
+                            Japanese. All itineraries are localized, and the community explore feature connects
+                            travelers worldwide.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-white text-lg mb-3"> Security & limits</h4>
+                        <p class="leading-relaxed text-sm">Daily free requests: 5. Upgrade via rewarded ads. Brute‑force
+                            protection, profanity filters, and Firebase Auth keep your data safe. Ghost mode works
+                            offline.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-white text-lg mb-3">Export & journal</h4>
+                        <p class="leading-relaxed text-sm">Export to PDF, share trips with friends, or keep a private
+                            travel journal inside the app. All plans sync across your devices (when signed in).</p>
+                    </div>
+                </div>
+
+                <!-- system requirements mini table -->
+                <div
+                    class="mt-8 pt-6 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center text-sm">
+                    <div><span class="block text-slate-500">Android</span><span class="font-medium">8.0+ (API 26)</span>
+                    </div>
+                    <div><span class="block text-slate-500">Architecture</span><span
+                            class="font-medium">arm64-v8a</span></div>
+                    <div><span class="block text-slate-500">Permissions</span><span class="font-medium">Internet,
+                            Notifications</span></div>
+                    <div><span class="block text-slate-500">Languages</span><span class="font-medium">5</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trust & assurance -->
+        <div class="mt-16 text-center reveal stagger-4">
+            <div
+                class="inline-flex items-center gap-6 glass-panel px-6 py-3 rounded-full text-xs md:text-sm text-slate-400">
+                <span class="flex items-center gap-1"><span class="text-green-400">✓</span> No malware</span>
+                <span class="w-px h-4 bg-white/20"></span>
+                <span class="flex items-center gap-1"><span class="text-green-400">✓</span> Open source
+                    components</span>
+                <span class="w-px h-4 bg-white/20"></span>
+                <span class="flex items-center gap-1"><span class="text-green-400">✓</span> Regular updates</span>
+            </div>
+            <p class="mt-6 text-slate-500 text-sm">
+
+
+            </p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 border-t border-white/10 mt-12 py-8 text-center text-slate-500 text-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>ItinFinder · Intelligent travel planning · © 2026</p>
+            <p class="mt-2 text-xs">APK file provided as-is. Make sure to enable “Install unknown apps” before
+                installing.</p>
+        </div>
+    </footer>
+
+    <!-- Reveal animations on scroll -->
+    <script>
+            (function () {
+                const reveals = document.querySelectorAll('.reveal:not(.active)');
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                        }
+                    });
+                }, { threshold: 0.15, rootMargin: '0px 0px -20px 0px' });
+
+                reveals.forEach(el => observer.observe(el));
+
+                // Also add active to any that are already visible
+                setTimeout(() => {
+                    document.querySelectorAll('.reveal').forEach(el => {
+                        const rect = el.getBoundingClientRect();
+                        if (rect.top < window.innerHeight * 0.8) {
+                            el.classList.add('active');
+                        }
+                    });
+                }, 100);
+            })();
+    </script>
+
+    <!-- Smooth hover interactions (no extra libraries) -->
+</body>
+
+</html>
