@@ -369,7 +369,9 @@
 
         /* === MOBILE RESPONSIVENESS FIXES === */
         /* Hide Mobile Navigator on Desktop by default */
-        .mobile-toc-fab, .mobile-toc-overlay, .mobile-toc-backdrop {
+        .mobile-toc-fab,
+        .mobile-toc-overlay,
+        .mobile-toc-backdrop {
             display: none;
         }
 
@@ -586,15 +588,17 @@
                         </div>
 
                         <h2>What is ItinFinder?</h2>
-                        <p>ItinFinder transforms travel ideas into structured, actionable plans. Unlike traditional
-                            itinerary apps that rely on static databases, ItinFinder leverages:</p>
+                        <p>ItinFinder is an ultra-modern, premium cross-platform React Native (Expo) travel application.
+                            It utilizes cutting-edge AI (Groq + OpenRouter) and live web scraping agents (TinyFish) to
+                            craft ultra-specific, vivid, and culturally immersive travel itineraries — with robust
+                            offline support, background intelligence, and a Pro cloud tier.:</p>
                         <ul>
                             <li><code>Groq LLaMA 3.3 70B</code> — Ultra‑fast inference for instant generation</li>
                             <li><code>TinyFish Web Agents</code> — Autonomous browsing for live attraction and
                                 restaurant data</li>
                             <li><code>Open‑Meteo</code> — 7‑day weather forecasts integrated into daily plans</li>
                         </ul>
-                        <p>The app supports five languages, offline Mode, and a community‑driven explore feed. It is
+                        <p>The app supports five languages, and a community‑driven explore feed. It is
                             available as a direct APK download for Android devices.</p>
                     </section>
 
@@ -1058,16 +1062,14 @@ fields:
                             <tbody>
                                 <tr>
                                     <td>Guest Explorer</td>
-                                    <td>Create first trip</td>
+                                    <td>You get this badge when you sign up</td>
                                 </tr>
                                 <tr>
                                     <td>Universe Traveler</td>
-                                    <td>Generate 50 trips</td>
+                                    <td>Complete 15 trips</td>
                                 </tr>
-                                <tr>
-                                    <td>Deep Diver</td>
-                                    <td>Use Deep Mode 20 times</td>
-                                </tr>
+
+
                             </tbody>
                         </table>
                     </section>
@@ -1131,7 +1133,8 @@ const pdfUri = await generatePDF(trip);
                                 <p class="text-sm font-semibold text-cyan-400 mt-4 mb-1">"Can I use the app offline?"
                                 </p>
                                 <p class="text-xs text-slate-400">You can view all your <strong>Saved Trips</strong>
-                                    while offline. However, generating new trips or using the Explore feed requires an
+                                    while offline provided you dont restart the app. However, generating new trips or
+                                    using the Explore feed requires an
                                     internet connection.</p>
                             </div>
 
@@ -1144,30 +1147,7 @@ const pdfUri = await generatePDF(trip);
                         </div>
                     </section>
 
-                    <!-- Technical Troubleshooting -->
-                    <section id="technical-troubleshooting">
-                        <h2>Technical Setup & Troubleshooting</h2>
-                        <p>For developers or power users looking to configure ItinFinder manually or run it in a local environment.</p>
 
-                        <div class="glass-card p-6 rounded-2xl mt-8">
-                            <h3 class="mt-0 text-white">Environment Configuration</h3>
-                            <p class="text-sm text-slate-400 mb-4">ItinFinder requires several API keys to function in Deep Mode. Ensure your <code>.env</code> file contains the following:</p>
-                            <div class="bg-black/50 p-4 rounded-xl font-mono text-xs text-cyan-300 border border-white/5">
-                                GROQ_API_KEY=your_key_here<br>
-                                TINYFISH_SERVICE_URL=https://api.tinyfish.ai<br>
-                                FIREBASE_CONFIG=...
-                            </div>
-                        </div>
-
-                        <div class="glass-card p-6 rounded-2xl mt-6">
-                            <h3 class="mt-0 text-white">Common Build Errors</h3>
-                            <p class="text-sm font-semibold text-cyan-400 mt-4 mb-1">"Metro Bundler failed to start"</p>
-                            <p class="text-xs text-slate-400">Usually caused by a port conflict (8081). Try running <code>npx react-native start --port 8089</code> or killing the existing process.</p>
-
-                            <p class="text-sm font-semibold text-cyan-400 mt-4 mb-1">"Keystore not found"</p>
-                            <p class="text-xs text-slate-400">Ensure you have generated an upload key for Android. Refer to the <a href="https://reactnative.dev/docs/signed-apk-android" target="_blank" class="text-indigo-400 hover:underline">Official React Native Docs</a> for signing.</p>
-                        </div>
-                    </section>
 
                     <!-- Footer note -->
                     <div class="border-t border-white/10 mt-16 pt-8 pb-4 text-sm text-slate-500">

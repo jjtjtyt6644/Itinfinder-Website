@@ -18,7 +18,6 @@ ItinFinder is an AI-powered travel ecosystem designed to transform vague travel 
 
 ###  Smart & Secure
 - **Rate Limiting**: Fair usage with 5 free daily requests.
-- **Privacy First**: Ghost mode for offline usage and secure Firebase authentication for synced data.
 - **Multi-language**: Fully localized support for English, Spanish, French, German, and Japanese.
 
 ##  Technology Stack

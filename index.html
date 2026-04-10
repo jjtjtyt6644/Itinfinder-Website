@@ -226,12 +226,15 @@
     .menu-open #mobile-menu {
       transform: translateX(0);
     }
+
     .menu-open #mobile-menu-button span:nth-child(1) {
       transform: translateY(8px) rotate(45deg);
     }
+
     .menu-open #mobile-menu-button span:nth-child(2) {
       opacity: 0;
     }
+
     .menu-open #mobile-menu-button span:nth-child(3) {
       transform: translateY(-8px) rotate(-45deg);
     }
@@ -249,13 +252,33 @@
     }
 
     /* Staggered delays for Nav Things */
-    .menu-open .mobile-link:nth-child(1) { transition-delay: 0.20s; }
-    .menu-open .mobile-link:nth-child(2) { transition-delay: 0.25s; }
-    .menu-open .mobile-link:nth-child(3) { transition-delay: 0.30s; }
-    .menu-open .mobile-link:nth-child(4) { transition-delay: 0.35s; }
-    .menu-open .mobile-link:nth-child(5) { transition-delay: 0.40s; }
-    .menu-open .mobile-link:nth-child(6) { transition-delay: 0.45s; }
-    .menu-open .mobile-link:nth-child(7) { transition-delay: 0.50s; }
+    .menu-open .mobile-link:nth-child(1) {
+      transition-delay: 0.20s;
+    }
+
+    .menu-open .mobile-link:nth-child(2) {
+      transition-delay: 0.25s;
+    }
+
+    .menu-open .mobile-link:nth-child(3) {
+      transition-delay: 0.30s;
+    }
+
+    .menu-open .mobile-link:nth-child(4) {
+      transition-delay: 0.35s;
+    }
+
+    .menu-open .mobile-link:nth-child(5) {
+      transition-delay: 0.40s;
+    }
+
+    .menu-open .mobile-link:nth-child(6) {
+      transition-delay: 0.45s;
+    }
+
+    .menu-open .mobile-link:nth-child(7) {
+      transition-delay: 0.50s;
+    }
   </style>
 </head>
 
@@ -285,7 +308,7 @@
         APK</a>
       <a href="downloads.html" class="sm:hidden px-4 py-2 rounded-full bg-indigo-600 text-white text-sm font-medium">Get
         App</a>
-      
+
       <!-- Hamburger Menu Button -->
       <button id="mobile-menu-button" class="md:hidden text-white flex flex-col gap-1.5 p-2 focus:outline-none z-50">
         <span class="w-6 h-0.5 bg-white rounded-full transition-all duration-300"></span>
@@ -296,14 +319,17 @@
   </nav>
 
   <!-- Mobile Menu Overlay -->
-  <div id="mobile-menu" class="fixed inset-0 z-40 bg-zinc-950/98 backdrop-blur-2xl translate-x-full transition-transform duration-500 md:hidden flex flex-col items-center justify-center gap-8 px-6 text-center">
+  <div id="mobile-menu"
+    class="fixed inset-0 z-40 bg-zinc-950/98 backdrop-blur-2xl translate-x-full transition-transform duration-500 md:hidden flex flex-col items-center justify-center gap-8 px-6 text-center">
     <a href="#home" class="mobile-link text-4xl font-bold text-white hover:text-cyan-400 transition">Home</a>
     <a href="#modes" class="mobile-link text-4xl font-bold text-white hover:text-cyan-400 transition">Features</a>
     <a href="#ecosystem" class="mobile-link text-4xl font-bold text-white hover:text-cyan-400 transition">Ecosystem</a>
     <a href="#tech" class="mobile-link text-4xl font-bold text-white hover:text-cyan-400 transition">Tech</a>
     <a href="docs.html" class="mobile-link text-4xl font-bold text-white hover:text-cyan-400 transition">Docs</a>
     <a href="about.html" class="mobile-link text-4xl font-bold text-white hover:text-cyan-400 transition">About</a>
-    <a href="downloads.html" class="mobile-link px-10 py-5 rounded-full bg-white text-zinc-950 font-bold mt-6 text-xl hover:bg-slate-200 transition transform active:scale-95">Download App</a>
+    <a href="downloads.html"
+      class="mobile-link px-10 py-5 rounded-full bg-white text-zinc-950 font-bold mt-6 text-xl hover:bg-slate-200 transition transform active:scale-95">Download
+      App</a>
   </div>
 
   <!-- 21st.dev Aurora Animated Background -->
@@ -581,10 +607,7 @@
             <div class="text-2xl font-bold">PDF</div>
             <div class="text-xs text-slate-400">Export Format</div>
           </div>
-          <div class="glass-card p-4 rounded-xl text-center fade-up" style="transition-delay: 0.3s">
-            <div class="text-2xl font-bold">Ghost</div>
-            <div class="text-xs text-slate-400">Mode Available</div>
-          </div>
+
         </div>
       </div>
     </section>
@@ -684,7 +707,7 @@
           </div>
           <div class="glass-card rounded-2xl p-8 slide-right">
             <div class="text-4xl text-cyan-400 mb-4">“</div>
-            <p class="text-slate-300 mb-6">Ghost mode is a game changer. I planned my entire trip offline and synced
+            <p class="text-slate-300 mb-6"> Itinfinder is a game changer. I planned my entire trip
               when I got wifi. Seamless.</p>
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-full bg-pink-500/30 flex items-center justify-center font-bold">D</div>
@@ -747,8 +770,7 @@
           </div>
           <div class="glass-card rounded-2xl p-6 slide-left">
             <h3 class="font-bold text-lg mb-2">Can I use ItinFinder offline?</h3>
-            <p class="text-slate-400">Absolutely. ItinFinder supports offline mode to store requests locally. It will
-              autosync with database when you're back online.</p>
+            <p class="text-slate-400">Depends. Write it when prodcution.</p>
           </div>
           <div class="glass-card rounded-2xl p-6 slide-right">
             <h3 class="font-bold text-lg mb-2">What languages are supported?</h3>
@@ -832,22 +854,22 @@
         }, 100);
       })();
 
-      // Mobile Menu Toggle logic
-      const menuBtn = document.getElementById('mobile-menu-button');
-      const mobileMenu = document.getElementById('mobile-menu');
-      const mobileLinks = document.querySelectorAll('.mobile-link');
+    // Mobile Menu Toggle logic
+    const menuBtn = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
 
-      if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener('click', () => {
-          document.body.classList.toggle('menu-open');
-        });
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', () => {
+        document.body.classList.toggle('menu-open');
+      });
 
-        mobileLinks.forEach(link => {
-          link.addEventListener('click', () => {
-            document.body.classList.remove('menu-open');
-          });
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          document.body.classList.remove('menu-open');
         });
-      }
+      });
+    }
   </script>
 
   <!-- Smooth scroll for same-page anchor links (preserve default behavior) -->
